@@ -176,6 +176,32 @@ end
 %Lilliefors on weekly data
 
 Weekly_LFT = Lilliefors(LogWeekR);
+
+%% How many data are bigger/smaller than mean + sigma
+
+% For a normal law, 0.27% of the data should be smaller or bigger than 
+% the mean +- 3 sigma. 
+
+%Daily
+
+GreaterDaily = zeros(1,K);
+for i = 1:K
+ThreeSigmaD = mean(LogRD(:,i))+3*sqrt(var(LogRD(:,i))); %Threshold of mean + 3 sigma
+AbsDailyLR = abs(LogRD(:,i)); %Taking the absolute value since the normal law is symmetric
+greater = sum(AbsDailyLR>ThreeSigmaD); %Creating a vector of 1 if the value is greater and 0 otherwise
+GreaterDaily(1,i) = greater/length(AbsDailyLR)*100; %Computing the percentage of value bigger than the threshold
+end 
+
+%Weekly 
+
+GreaterWeekly = zeros(1,K);
+for i = 1:K
+ThreeSigmaW = mean(LogWeekR(:,i))+3*sqrt(var(LogWeekR(:,i))); %Threshold of mean + 3 sigma
+AbsWeeklyLR = abs(LogWeekR(:,i)); %Taking the absolute value since the normal law is symmetric
+greater = sum(AbsWeeklyLR>ThreeSigmaW); %Creating a vector of 1 if the value is greater and 0 otherwise
+GreaterWeekly(1,i) = greater/length(AbsWeeklyLR)*100; %Computing the percentage of value bigger than the threshold
+end 
+
 %% Jarque and Bera Test
 
 % The function is coded in a separate m file
