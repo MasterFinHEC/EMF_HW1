@@ -314,7 +314,7 @@ writetable(WeeklyLjung,filename,'Sheet','LjunboxTest','Range','A1','WriteRowName
 
 W=ones(1,K)*1/K;
 
-% Daily returns
+% Daily returns for blacksouane
 
 PRD=SimpleRD*W';
 mean_PRD = mean(PRD);
