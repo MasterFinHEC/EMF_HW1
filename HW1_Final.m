@@ -119,6 +119,7 @@ writetable(StatLRW,filename,'Sheet',1,'Range','D1','WriteRowNames',true)
 % Daily Crashes and Booms
 
 %Creating a matrice to store the data
+P_values=zeros([5 6]);
 
 for i = 1:K
    
@@ -130,6 +131,12 @@ DailyVolLRD = sqrt(var(LogRD(:,i)));
 [daily_log_returns,id_logRD]=sort(LogRD(:,i),'ascend');
 Date =  date(id_logRD);
 probability = (1-normcdf(abs(daily_log_returns),DailyMeanLRD,DailyVolLRD));
+
+%Computing p-values
+for j=1:5
+    [h,p] = ztest(daily_log_returns(j,:),DailyMeanLRD,DailyVolLRD);
+    P_values(j,i)=p;
+end
 
 %Writing the Crashes in a dataset
 CrashesDaily = table(Date(1:5,:),daily_log_returns(1:5)*100,probability(1:5));
@@ -143,6 +150,11 @@ filename = 'Results/DailyBooms.xlsx';
 writetable(BoomsDaily,filename,'Sheet',sheet,'Range','D1')
 
 end
+
+P_values=array2table(P_values);
+P_values.Properties.VariableNames=Names;
+P_values.Properties.RowNames={'1','2','3','4','5'};
+writetable(P_values,'p_values.xlsx','Sheet',sheet,'Range','D1');
 
 %Lilliefors test
 
