@@ -151,15 +151,19 @@ writetable(BoomsDaily,filename,'Sheet',sheet,'Range','D1')
 
 end
 
+% Creating a dataset with the Pvalues
 P_values=array2table(P_values);
 P_values.Properties.VariableNames=Names;
 P_values.Properties.RowNames={'1','2','3','4','5'};
-writetable(P_values,'p_values.xlsx','Sheet',sheet,'Range','D1');
+writetable(P_values,'Results/p_values.xlsx','Sheet',sheet,'Range','D1');
 
 %Lilliefors test
-
 Daily_LFT = Lilliefors(LogRD);
+
 %% Weekly crashes and booms of the SP500
+
+%Creating a matrice to store the P_Values
+P_values_weekly=zeros([5 6]);
 
 for i = 1:K
 
@@ -170,7 +174,13 @@ WeeklyVolLRW = sqrt(var(LogWeekR(i)));
 %Ordering and computing the Probabilty of such extremes happening
 [weekly_log_returns,id]=sort(LogWeekR(:,i),'ascend');
 Weeks = date(2+5*(id-1));
-probability_weekly = (1-normcdf(abs(weekly_log_returns),DailyMeanLRD,DailyVolLRD));
+probability_weekly = (1-normcdf(abs(weekly_log_returns),WeeklyMeanLRW,WeeklyVolLRW));
+
+%Computing p-values
+for j=1:5
+    [h,p] = ztest(weekly_log_returns(j,:),WeeklyMeanLRW,WeeklyVolLRW);
+    P_values_weekly(j,i)=p;
+end
 
 %Writing the Weekly Crashes in a dataset
 CrashesWeekly = table(Weeks(1:5,:),weekly_log_returns(1:5)*100,probability_weekly(1:5));
@@ -185,17 +195,21 @@ writetable(BoomsWeekly,filename,'Sheet',sheet,'Range','D1')
 
 end
 
-%Lilliefors on weekly data
+% Creating a dataset with the Pvalues
+P_values_weekly=array2table(P_values_weekly);
+P_values_weekly.Properties.VariableNames=Names;
+P_values_weekly.Properties.RowNames={'1','2','3','4','5'};
+writetable(P_values_weekly,'Results/p_values_weekly.xlsx','Sheet',sheet,'Range','D1');
 
+%Lilliefors on weekly data
 Weekly_LFT = Lilliefors(LogWeekR);
 
-%% How many data are bigger/smaller than mean + sigma
+%% How many data are bigger/smaller than mean + 3*sigma
 
 % For a normal law, 0.27% of the data should be smaller or bigger than 
 % the mean +- 3 sigma. 
 
 %Daily
-
 GreaterDaily = zeros(1,K);
 for i = 1:K
 ThreeSigmaD = mean(LogRD(:,i))+3*sqrt(var(LogRD(:,i))); %Threshold of mean + 3 sigma
@@ -205,7 +219,6 @@ GreaterDaily(1,i) = greater/length(AbsDailyLR)*100; %Computing the percentage of
 end 
 
 %Weekly 
-
 GreaterWeekly = zeros(1,K);
 for i = 1:K
 ThreeSigmaW = mean(LogWeekR(:,i))+3*sqrt(var(LogWeekR(:,i))); %Threshold of mean + 3 sigma
@@ -380,6 +393,7 @@ kurt_PRW = kurtosis(PRW);
 minPRW = min(PRW);
 maxPRW = max(PRW);
 
+%DataSet
 Portfolio_stat_W =[amean_PRW*100;mean_PRW;avol_PRW*100;skew_PRW;kurt_PRW;minPRW*100;maxPRW*100];
 Portfolio_stat_W= array2table(Portfolio_stat_W,'VariableNames',{'Porfolio'},'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
 
