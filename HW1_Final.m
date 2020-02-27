@@ -227,6 +227,9 @@ greater = sum(AbsWeeklyLR>ThreeSigmaW); %Creating a vector of 1 if the value is 
 GreaterWeekly(1,i) = greater/length(AbsWeeklyLR)*100; %Computing the percentage of value bigger than the threshold
 end 
 
+GreaterAll = array2table([GreaterDaily;GreaterWeekly],'VariableNames',Names,'RowNames',{'Daily','Weekly'});
+writetable(GreaterAll,'Results/GreaterThan3Sigma.xlsx','sheet','Non-Normal','Range','A1','WriteRowNames',true);
+
 %% Jarque and Bera Test
 
 % The function is coded in a separate m file
@@ -238,6 +241,9 @@ JbStatDaily = JarqueBera(LogRD);
 %Weekly Data
 
 JbStatWeekly = JarqueBera(LogWeekR);
+
+JBstats = array2table([JbStatDaily;JbStatWeekly],'VariableNames',Names,'RowNames',{'Daily','Weekly'});
+writetable(JBstats,'Results/JarqueBera.xlsx','sheet','JarqueBera','Range','A1','WriteRowNames',true);
 
 %% 3d. Autocorrelation Daily
 
@@ -350,7 +356,7 @@ writetable(DailyLjung,filename,'Sheet','LjunboxTest','Range','A1','WriteRowNames
 WeeklyLjung = zeros(3,K);
 
 for i = 1:K
- WeeklyLjung(1:3,i) = LjungBoxTest(LogRD(:,i),10,0,0.05);
+ WeeklyLjung(1:3,i) = LjungBoxTest(LogWeekR(:,i),10,0,0.05);
 end 
 WeeklyLjung = array2table(WeeklyLjung,'VariableNames',Names,'RowNames',{'QLBStat','LBCritVal','LBPvalue'});
 filename = 'Results/Ljungbox_Weekly.xlsx';
