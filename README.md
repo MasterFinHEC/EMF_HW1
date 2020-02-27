@@ -1,6 +1,8 @@
 # EMF_HW1
 The Main code is "HW1_Final" and it calls all the other code in the folder.
 
+You need to add the path for the Kevin Sheperd ToolBox in order to make the code work !
+
 You need to create three folders in order to store the results, the plots and the latex code for the table: 
 
 Results 
