@@ -281,20 +281,20 @@ ylabel('Cumulative returns','FontSize',12,'FontName','Calibri')
 legend([Names,'Portfolio'],'Location','northwest')
 saveas(f,'Plots/PricesAndPortfolio.png')
 
-%% Plot daily log returns & Portfolio
+%% Plot daily simple returns & Portfolio
 f = figure('visible','off');
 x=date(2:end);
 plot(x,Portfolio_LRD)
 legend([Names,'Portfolio'],'Location','southeast')
-title('Daily Log-Returns') 
+title('Daily Simple Returns') 
 datetick('x','dd-mmm-yyyy');
-saveas(f,'Plots/Daily_Log_Returns.png')
+saveas(f,'Plots/Daily_Simple_Returns.png')
 
-%% Plot weekly log returns & Portfolio
+%% Plot weekly simple returns & Portfolio
 f = figure('visible','off');
 x=weekdate(2:end);
 plot(x,Portfolio_LRW)
 legend([Names,'Portfolio'],'Location','southeast')
-title('Weekly Log-Returns') 
+title('Weekly Simple Returns') 
 datetick('x','dd-mmm-yyyy');
-saveas(f,'Plots/Weekly_Log_Returns.png')
+saveas(f,'Plots/Weekly_Returns.png')
