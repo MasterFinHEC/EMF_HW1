@@ -391,7 +391,7 @@ AllLjungbox = array2table([DailyLjung_2;WeeklyLjung_2;DailySquaredLjung_2;Weekly
 
 W=ones(1,K)*1/K;
 
-% Daily returns for blacksouane
+%% Daily returns of the portfolio
 
 PRD=SimpleRD*W';
 mean_PRD = mean(PRD);
@@ -403,12 +403,34 @@ kurt_PRD = kurtosis(PRD);
 minPRD = min(PRD);
 maxPRD = max(PRD);
 
+%Creating a vector of the portfolio and simple returns
+Portfolio_LRD=[PRD SimpleRD];
+
+% Creating a table with the Portfolio Data
 Portfolio_stat_D =[amean_PRD*100;mean_PRD;avol_PRD*100;skew_PRD;kurt_PRD;minPRD*100;maxPRD*100];
 Portfolio_stat_D= array2table(Portfolio_stat_D,'VariableNames',{'Porfolio'},'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
 
+% Creating a dataset with the descriptive statistics of the portfolio and
+% each individual asset class
+amean_PD=[amean_PRD MeanSRD];
+mean_PD=[mean_PRD mean(SimpleRD)];
+avol_PD=[avol_PRD VolSRD];
+skew_PD=[skew_PRD SkewSRD];
+kurt_PD=[kurt_PRD KurtSRD];
+minPD=[minPRD MinSRD];
+maxPD=[maxPRD MaxSRD];
+
+Pnames=['Portfolio' Names]; %Vector with the portfolio and the names of the individual assets 
+
+%Creating the table
+Summary_stat_D=[amean_PD*100;mean_PD;avol_PD*100;skew_PD;kurt_PD;minPD*100;maxPD*100];
+Summary_stat_D= array2table(Summary_stat_D,'VariableNames',Pnames,'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
+
+%% Weekly returns of the portfolio
 % 4b. Re-do the same exercise at weekly frequency. Elaborate on the relative effect of
 % temporal and contemporaneous aggregate normality features.
 
+%Computing descriptive statistics
 PRW=SimWeekR*W';
 mean_PRW = mean(PRW);
 amean_PRW = (1+mean_PRW).^252-1; % annualized mean
@@ -419,14 +441,33 @@ kurt_PRW = kurtosis(PRW);
 minPRW = min(PRW);
 maxPRW = max(PRW);
 
-%DataSet
+%DataSet of the portfolio return
 Portfolio_stat_W =[amean_PRW*100;mean_PRW;avol_PRW*100;skew_PRW;kurt_PRW;minPRW*100;maxPRW*100];
 Portfolio_stat_W= array2table(Portfolio_stat_W,'VariableNames',{'Porfolio'},'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
 
+% Creating a vector with the returns of the portfolio and each asset class
+Portfolio_LRW=[PRW SimWeekR];
+
+% Computing vector of descriptive statistics for the portfolio and
+% individuals assets
+amean_PW=[amean_PRW MeanSRW];
+mean_PW=[mean_PRW mean(SimWeekR)];
+avol_PW=[avol_PRW VolSRW];
+skew_PW=[skew_PRW SkewSRW];
+kurt_PW=[kurt_PRW KurtSRW];
+min_PW=[minPRW MinSRW];
+max_PW=[maxPRW MaxSRW];
+
+% Creating a dataset with the descriptive statistics of the portfolio and
+% each asset class 
+Summary_stat_W=[amean_PW*100;mean_PW;avol_PW*100;skew_PW;kurt_PW;min_PW*100;max_PW*100];
+Summary_stat_W= array2table(Summary_stat_W,'VariableNames',['Porfolio',Names],'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
+
 %% Calling plots and latex code
 
-disp('Analyse code finished, Starting conversion of table !')
+disp('Analysis code finished, Starting conversion of table !')
 tabletolatex
-disp('Conversion of table done, starting to plot graphs !')
+disp('Conversion of table done, starting to plot graphs, ')
+disp('This may take up to a minute !')
 Plot_Code
-disp('Code finished')
+disp('Code finished !')
