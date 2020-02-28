@@ -14,6 +14,8 @@ table2latex(Portfolio_stat_D,'Latex_Table\Portfolio_stat_D.tex')
 table2latex(Portfolio_stat_W,'Latex_Table\Portfolio_stat_W.tex')
 table2latex(GreaterAll,'Latex_Table\GreaterthanSigma.tex')
 table2latex(JBstats,'Latex_Table\JarqueBera.tex')
+table2latex(P_values,'Latex_Table\P_values.tex')
+table2latex(P_valuesW,'Latex_Table\P_valuesW.tex')
 
 %% These tables do not work for now
 
