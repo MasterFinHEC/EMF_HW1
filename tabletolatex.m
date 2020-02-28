@@ -14,8 +14,13 @@ table2latex(Portfolio_stat_D,'Latex_Table\Portfolio_stat_D.tex')
 table2latex(Portfolio_stat_W,'Latex_Table\Portfolio_stat_W.tex')
 table2latex(GreaterAll,'Latex_Table\GreaterthanSigma.tex')
 table2latex(JBstats,'Latex_Table\JarqueBera.tex')
+table2latex(Autocorr_WeeklySquared,'Latex_Table\WeeklySquared.tex')
+table2latex(Autocorr_DailySquared,'Latex_Table\DailySquared.tex')
+table2latex(AllLjungbox,'Latex_Table\AllLjungbox.tex')
 table2latex(P_values,'Latex_Table\P_values.tex')
-table2latex(P_valuesW,'Latex_Table\P_valuesW.tex')
+table2latex(P_values_weekly,'Latex_Table\P_valuesW.tex')
+table2latex(Summary_stat_W,'Latex_Table\SummaryWeekly.tex')
+table2latex(Summary_stat_D,'Latex_Table\SummaryDaily.tex')
 
 %% These tables do not work for now
 
