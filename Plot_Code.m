@@ -259,3 +259,21 @@ graphname = sprintf('Plots/Correlogram for %s weekly squared returns.png',string
 saveas(f,graphname)
 
 end
+
+%% Plot daily log returns & Portfolio
+f = figure('visible','off');
+x=date(2:end);
+plot(x,Portfolio_LRD)
+legend(Pnames,'Location','southeast')
+title('Daily Log-Returns') 
+datetick('x','dd-mmm-yyyy');
+saveas(f,'Plots/Daily_Log_Returns.png')
+
+%% Plot weekly log returns & Portfolio
+f = figure('visible','off');
+x=weekdate(2:end);
+plot(x,Portfolio_LRW)
+legend(Pnames,'Location','southeast')
+title('Weekly Log-Returns') 
+datetick('x','dd-mmm-yyyy');
+saveas(f,'Plots/Weekly_Log_Returns.png')

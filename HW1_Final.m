@@ -81,6 +81,10 @@ end
 
 % Descriptive Statistics of Weekly Returns
 
+%Mean
+meanSRW=mean(SimWeekR);
+meanLRW=mean(LogWeekR);
+
 %Annualized Mean
 MeanSRW = (1+mean(SimWeekR)).^52 -1;
 MeanLRW = (1+mean(LogWeekR)).^52 -1;
@@ -405,11 +409,24 @@ maxPRW = max(PRW);
 Portfolio_stat_W =[amean_PRW*100;mean_PRW;avol_PRW*100;skew_PRW;kurt_PRW;minPRW*100;maxPRW*100];
 Portfolio_stat_W= array2table(Portfolio_stat_W,'VariableNames',{'Porfolio'},'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
 
+
 Portfolio_LRW=[PRW LogWeekR];
 weekdate=[];
 for i=1:5:length(date)
     weekdate=[weekdate;date(i)];
 end
+
+amean_PW=[amean_PRW MeanLRW];
+mean_PW=[mean_PWR meanLRW];
+avol_PW=[avol_PRW VolLRW];
+skew_PW=[skew_PWR SkewLRW];
+kurt_PW=[kurt_PWR KurtLRW];
+min_PW=[min_PRW MinLRW];
+max_PW=[max_PRW MaxLRW];
+
+Summary_stat_W=[amean_PW*100;mean_PW;avol_PW*100;skew_PW;kurt_PW;minPW*100;maxPW*100];
+Summary_stat_W= array2table(Summary_stat_W,'VariableNames',{'Porfolio'},'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
+
 
 %% Calling plots and latex code
 
