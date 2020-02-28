@@ -81,10 +81,6 @@ end
 
 % Descriptive Statistics of Weekly Returns
 
-%Mean
-meanSRW=mean(SimWeekR);
-meanLRW=mean(LogWeekR);
-
 %Annualized Mean
 MeanSRW = (1+mean(SimWeekR)).^52 -1;
 MeanLRW = (1+mean(LogWeekR)).^52 -1;
@@ -345,26 +341,46 @@ writetable(Autocorr_WeeklySquared,filename,'Sheet','AutoCorrelation','Range','A1
 %% LungBoxTest
 
 % Daily 
-
-DailyLjung = zeros(3,K);
+DailyLjung_2 = zeros(3,K);
 
 for i = 1:K
- DailyLjung(1:3,i) = LjungBoxTest(LogRD(:,i),10,0,0.05);
+ DailyLjung_2(1:3,i) = LjungBoxTest(LogRD(:,i),10,0,0.05);
 end 
-DailyLjung = array2table(DailyLjung,'VariableNames',Names,'RowNames',{'QLBStat','LBCritVal','LBPvalue'});
+DailyLjung = array2table(DailyLjung_2,'VariableNames',Names,'RowNames',{'QLBStat','LBCritVal','LBPvalue'});
 filename = 'Results/Ljungbox_daily.xlsx';
 writetable(DailyLjung,filename,'Sheet','LjunboxTest','Range','A1','WriteRowNames',true)
 
 % Weekly 
-
-WeeklyLjung = zeros(3,K);
+WeeklyLjung_2 = zeros(3,K);
 
 for i = 1:K
- WeeklyLjung(1:3,i) = LjungBoxTest(LogWeekR(:,i),10,0,0.05);
+ WeeklyLjung_2(1:3,i) = LjungBoxTest(LogWeekR(:,i),10,0,0.05);
 end 
-WeeklyLjung = array2table(WeeklyLjung,'VariableNames',Names,'RowNames',{'QLBStat','LBCritVal','LBPvalue'});
+WeeklyLjung = array2table(WeeklyLjung_2,'VariableNames',Names,'RowNames',{'QLBStat','LBCritVal','LBPvalue'});
 filename = 'Results/Ljungbox_Weekly.xlsx';
 writetable(WeeklyLjung,filename,'Sheet','LjunboxTest','Range','A1','WriteRowNames',true)
+
+%Daily Squared
+DailySquaredLjung_2 = zeros(3,K);
+
+for i = 1:K
+ DailySquaredLjung_2(1:3,i) = LjungBoxTest(DailySquared(:,i),10,0,0.05);
+end 
+DailySquaredLjung = array2table(DailySquaredLjung_2,'VariableNames',Names,'RowNames',{'QLBStat','LBCritVal','LBPvalue'});
+filename = 'Results/Ljungbox_dailySquared.xlsx';
+writetable(DailySquaredLjung,filename,'Sheet','LjunboxTest','Range','A1','WriteRowNames',true)
+
+%Weekly Squared 
+WeeklySquaredLjung_2 = zeros(3,K);
+
+for i = 1:K
+ WeeklySquaredLjung_2(1:3,i) = LjungBoxTest(WeeklySquared(:,i),10,0,0.05);
+end 
+WeeklySquaredLjung = array2table(WeeklySquaredLjung_2,'VariableNames',Names,'RowNames',{'QLBStat','LBCritVal','LBPvalue'});
+filename = 'Results/Ljungbox_WeeklySquared.xlsx';
+writetable(WeeklySquaredLjung,filename,'Sheet','LjunboxTest','Range','A1','WriteRowNames',true)
+
+AllLjungbox = array2table([DailyLjung_2;WeeklyLjung_2;DailySquaredLjung_2;WeeklySquaredLjung_2],'VariableNames',Names,'RowNames',{'Daily','1','2','Weekly','3','4','Daily Squared','5','6','Weekly Squared','7','8'});
 
 %% 4. Portofolio Statistic
 
@@ -387,8 +403,6 @@ kurt_PRD = kurtosis(PRD);
 minPRD = min(PRD);
 maxPRD = max(PRD);
 
-Portfolio_LRD=[PRD LogRD];
-
 Portfolio_stat_D =[amean_PRD*100;mean_PRD;avol_PRD*100;skew_PRD;kurt_PRD;minPRD*100;maxPRD*100];
 Portfolio_stat_D= array2table(Portfolio_stat_D,'VariableNames',{'Porfolio'},'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
 
@@ -409,26 +423,10 @@ maxPRW = max(PRW);
 Portfolio_stat_W =[amean_PRW*100;mean_PRW;avol_PRW*100;skew_PRW;kurt_PRW;minPRW*100;maxPRW*100];
 Portfolio_stat_W= array2table(Portfolio_stat_W,'VariableNames',{'Porfolio'},'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
 
-
-Portfolio_LRW=[PRW LogWeekR];
-weekdate=[];
-for i=1:5:length(date)
-    weekdate=[weekdate;date(i)];
-end
-
-amean_PW=[amean_PRW MeanLRW];
-mean_PW=[mean_PWR meanLRW];
-avol_PW=[avol_PRW VolLRW];
-skew_PW=[skew_PWR SkewLRW];
-kurt_PW=[kurt_PWR KurtLRW];
-min_PW=[min_PRW MinLRW];
-max_PW=[max_PRW MaxLRW];
-
-Summary_stat_W=[amean_PW*100;mean_PW;avol_PW*100;skew_PW;kurt_PW;minPW*100;maxPW*100];
-Summary_stat_W= array2table(Summary_stat_W,'VariableNames',{'Porfolio'},'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
-
-
 %% Calling plots and latex code
 
+disp('Analyse code finished, Starting conversion of table !')
 tabletolatex
+disp('Conversion of table done, starting to plot graphs !')
 Plot_Code
+disp('Code finished')
