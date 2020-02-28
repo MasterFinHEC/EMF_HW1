@@ -383,6 +383,8 @@ kurt_PRD = kurtosis(PRD);
 minPRD = min(PRD);
 maxPRD = max(PRD);
 
+Portfolio_LRD=[PRD LogRD];
+
 Portfolio_stat_D =[amean_PRD*100;mean_PRD;avol_PRD*100;skew_PRD;kurt_PRD;minPRD*100;maxPRD*100];
 Portfolio_stat_D= array2table(Portfolio_stat_D,'VariableNames',{'Porfolio'},'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
 
@@ -402,6 +404,12 @@ maxPRW = max(PRW);
 %DataSet
 Portfolio_stat_W =[amean_PRW*100;mean_PRW;avol_PRW*100;skew_PRW;kurt_PRW;minPRW*100;maxPRW*100];
 Portfolio_stat_W= array2table(Portfolio_stat_W,'VariableNames',{'Porfolio'},'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
+
+Portfolio_LRW=[PRW LogWeekR];
+weekdate=[];
+for i=1:5:length(date)
+    weekdate=[weekdate;date(i)];
+end
 
 %% Calling plots and latex code
 
