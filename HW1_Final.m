@@ -433,9 +433,9 @@ Summary_stat_D= array2table(Summary_stat_D,'VariableNames',Pnames,'RowNames',{'A
 %Computing descriptive statistics
 PRW=SimWeekR*W';
 mean_PRW = mean(PRW);
-amean_PRW = (1+mean_PRW).^252-1; % annualized mean
+amean_PRW = (1+mean_PRW).^52-1; % annualized mean
 var_PRW = var(PRW);
-avol_PRW = sqrt(var_PRW*252); % annualized volatility
+avol_PRW = sqrt(var_PRW*52); % annualized volatility
 skew_PRW = skewness(PRW);
 kurt_PRW = kurtosis(PRW);
 minPRW = min(PRW);
