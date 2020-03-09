@@ -468,6 +468,7 @@ Summary_stat_W= array2table(Summary_stat_W,'VariableNames',['Porfolio',Names],'R
 disp('Analysis code finished, Starting conversion of table !')
 tabletolatex
 disp('Conversion of table done, starting to plot graphs, ')
-disp('This may take up to a minute !')
+disp('This may take up to two minutes !')
 Plot_Code
+App_AutoCorrelations
 disp('Code finished !')
