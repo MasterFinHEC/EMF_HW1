@@ -276,7 +276,7 @@ saveas(f,graphname)
 
 end
 
-%% Plot of portfolio vs other
+%% Plot of daily portfolio vs other
 PRDCUM = cumprod(PRD+1);
 SimRDCum = cumprod(SimpleRD + 1);
 
@@ -288,6 +288,39 @@ xlabel('Date','FontSize',12,'FontName','Calibri')
 ylabel('Cumulative returns','FontSize',12,'FontName','Calibri')
 legend([Names,'Portfolio'],'Location','northwest')
 saveas(f,'Plots/PricesAndPortfolio.png')
+
+%% Plot of weekly portfolio vs other
+PRWCUM = cumprod(PRW+1);
+SimRWCum = cumprod(SimWeekR + 1);
+
+f = figure('visible','off');
+plot(weekdate(2:end,:),SimRWCum)
+hold on
+plot(weekdate(2:end,:),PRWCUM)
+xlabel('Date','FontSize',12,'FontName','Calibri')
+ylabel('Cumulative Weekly returns','FontSize',12,'FontName','Calibri')
+legend([Names,'Portfolio'],'Location','northwest')
+saveas(f,'Plots/WeeklyPricesAndPortfolio.png')
+
+
+
+%% Plot daily Simple returns & Portfolio
+f = figure('visible','off');
+x=date(2:end);
+plot(x,Portfolio_SRD)
+legend([Names,'Portfolio'],'Location','southeast')
+title('Daily Simple Returns') 
+datetick('x','dd-mmm-yyyy');
+saveas(f,'Plots/Daily_Simple_Returns.png')
+
+%% Plot weekly Simple returns & Portfolio
+f = figure('visible','off');
+x=weekdate(2:end);
+plot(x,Portfolio_SRW)
+legend([Names,'Portfolio'],'Location','southeast')
+title('Weekly Simple Returns') 
+datetick('x','dd-mmm-yyyy');
+saveas(f,'Plots/Weekly_Simple_Returns.png')
 
 %% Plot daily log returns & Portfolio
 f = figure('visible','off');
@@ -306,4 +339,3 @@ legend([Names,'Portfolio'],'Location','southeast')
 title('Weekly Log-Returns') 
 datetick('x','dd-mmm-yyyy');
 saveas(f,'Plots/Weekly_Log_Returns.png')
-
