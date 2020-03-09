@@ -1,5 +1,10 @@
-addpath(genpath('C:\Users\Benjamin\OneDrive\1. HEC\Master\MScF 4.2\EMF\2020\Homeworks\table2latex.m'))
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% EMPIRICAL METHODS FOR FINANCE
+% Homework I
+%
+% Benjamin Souane, Antoine-Michel Alexeev and Julien Bisch
+% Due Date: 5 March 2020
+%==========================================================================
 %% Creating the latex code 
 
 table2latex(StatSRD,'Latex_Table\StatSRD.tex')
