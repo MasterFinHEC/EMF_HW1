@@ -38,7 +38,7 @@ LBpValue = 1 - chi2cdf(QLBstat,df);
 
 
 % Output
-LBresult = [QLBstat,LBCritVal,LBpValue],...
+LBresult = [QLBstat,LBCritVal,LBpValue];
    %'Qstat','CriticalValue','pValue'},...
    %'ObsNames',{'Ljung-Box'});
 
