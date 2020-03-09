@@ -1,3 +1,11 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% EMPIRICAL METHODS FOR FINANCE
+% Homework I
+%
+% Benjamin Souane, Antoine-Michel Alexeev and Julien Bisch
+% Due Date: 5 March 2020
+%==========================================================================
+
 %% Weekdate
 
 %Computing Week Dates (For ploting)
@@ -298,3 +306,4 @@ legend([Names,'Portfolio'],'Location','southeast')
 title('Weekly Log-Returns') 
 datetick('x','dd-mmm-yyyy');
 saveas(f,'Plots/Weekly_Log_Returns.png')
+
