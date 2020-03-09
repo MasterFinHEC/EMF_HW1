@@ -116,7 +116,7 @@ saveas(f,'Plots/Currencies.png')
 %% Empiricial CDF VS Theoretical S&P500
 
 x=sort(LogRD);
-
+lim = [[-0.05,0.05],[-0.01,0.01],[-0.01,0.01],[-0.05,0.05],[-0.02,0.02],[-0.01,0.01]];
 for j = 1:K
 f = figure('visible','off');
 L=length(x);
@@ -128,7 +128,7 @@ x2=normrnd(meanRD,vola,[L,1]);
 cdfplot(x2);
 legend('Empirical CDF','Theoretical CDF','Location','best')
 title(sprintf('CDF of %s compare to the CDF a normal law',string(Names(j))))
-xlim([-0.05 0.05])
+xlim([lim(2*j-1) lim(2*j)])
 ylim([0 1])
 hold off
 graphname = sprintf('Plots/CDF of  %s.png',string(Names(j)));
@@ -276,7 +276,7 @@ saveas(f,graphname)
 
 end
 
-%% Plot of daily portfolio vs other
+%% Plot of portfolio vs other
 PRDCUM = cumprod(PRD+1);
 SimRDCum = cumprod(SimpleRD + 1);
 
@@ -289,45 +289,12 @@ ylabel('Cumulative returns','FontSize',12,'FontName','Calibri')
 legend([Names,'Portfolio'],'Location','northwest')
 saveas(f,'Plots/PricesAndPortfolio.png')
 
-%% Plot of weekly portfolio vs other
-PRWCUM = cumprod(PRW+1);
-SimRWCum = cumprod(SimWeekR + 1);
-
-f = figure('visible','off');
-plot(weekdate(2:end,:),SimRWCum)
-hold on
-plot(weekdate(2:end,:),PRWCUM)
-xlabel('Date','FontSize',12,'FontName','Calibri')
-ylabel('Cumulative Weekly returns','FontSize',12,'FontName','Calibri')
-legend([Names,'Portfolio'],'Location','northwest')
-saveas(f,'Plots/WeeklyPricesAndPortfolio.png')
-
-
-
-%% Plot daily Simple returns & Portfolio
-f = figure('visible','off');
-x=date(2:end);
-plot(x,Portfolio_SRD)
-legend([Names,'Portfolio'],'Location','southeast')
-title('Daily Simple Returns') 
-datetick('x','dd-mmm-yyyy');
-saveas(f,'Plots/Daily_Simple_Returns.png')
-
-%% Plot weekly Simple returns & Portfolio
-f = figure('visible','off');
-x=weekdate(2:end);
-plot(x,Portfolio_SRW)
-legend([Names,'Portfolio'],'Location','southeast')
-title('Weekly Simple Returns') 
-datetick('x','dd-mmm-yyyy');
-saveas(f,'Plots/Weekly_Simple_Returns.png')
-
 %% Plot daily log returns & Portfolio
 f = figure('visible','off');
 x=date(2:end);
 plot(x,Portfolio_LRD)
 legend([Names,'Portfolio'],'Location','southeast')
-title('Daily Log-Returns') 
+title('Daily Simple Returns') 
 datetick('x','dd-mmm-yyyy');
 saveas(f,'Plots/Daily_Log_Returns.png')
 
@@ -336,6 +303,7 @@ f = figure('visible','off');
 x=weekdate(2:end);
 plot(x,Portfolio_LRW)
 legend([Names,'Portfolio'],'Location','southeast')
-title('Weekly Log-Returns') 
+title('Weekly Simple Returns') 
 datetick('x','dd-mmm-yyyy');
 saveas(f,'Plots/Weekly_Log_Returns.png')
+
