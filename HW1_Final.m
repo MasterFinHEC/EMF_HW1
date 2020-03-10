@@ -404,7 +404,7 @@ minPRD = min(PRD);
 maxPRD = max(PRD);
 
 %Creating a vector of the portfolio and simple returns
-Portfolio_LRD=[PRD SimpleRD];
+Portfolio_SRD=[PRD SimpleRD];
 
 % Creating a table with the Portfolio Data
 Portfolio_stat_D =[amean_PRD*100;mean_PRD;avol_PRD*100;skew_PRD;kurt_PRD;minPRD*100;maxPRD*100];
@@ -426,6 +426,42 @@ Pnames=['Portfolio' Names]; %Vector with the portfolio and the names of the indi
 Summary_stat_D=[amean_PD*100;mean_PD;avol_PD*100;skew_PD;kurt_PD;minPD*100;maxPD*100];
 Summary_stat_D= array2table(Summary_stat_D,'VariableNames',Pnames,'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
 
+
+%% Daily Log-returns of the portfolio
+
+PLD=LogRD*W';
+mean_PLD = mean(PLD);
+amean_PLD = (1+mean_PLD).^252-1; % annualized mean
+var_PLD = var(PLD);
+avol_PLD = sqrt(var_PLD*252); % annualized volatility
+skew_PLD = skewness(PLD);
+kurt_PLD = kurtosis(PLD);
+minPLD = min(PLD);
+maxPLD = max(PLD);
+
+%Creating a vector of the portfolio and simple returns
+Portfolio_LRD=[PLD LogRD];
+
+% Creating a table with the Portfolio Data
+Portfolio_stat_LD =[amean_PLD*100;mean_PLD;avol_PLD*100;skew_PLD;kurt_PLD;minPLD*100;maxPLD*100];
+Portfolio_stat_LD= array2table(Portfolio_stat_LD,'VariableNames',{'Porfolio'},'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
+
+% Creating a dataset with the descriptive statistics of the portfolio and
+% each individual asset class
+amean_LPD=[amean_PLD MeanLRD];
+mean_LPD=[mean_PLD mean(LogRD)];
+avol_LPD=[avol_PLD VolLRD];
+skew_LPD=[skew_PLD SkewLRD];
+kurt_LPD=[kurt_PLD KurtLRD];
+minLPD=[minPLD MinLRD];
+maxLPD=[maxPLD MaxLRD];
+
+LPnames=['Portfolio' Names]; %Vector with the portfolio and the names of the individual assets 
+
+%Creating the table
+Summary_stat_LD=[amean_LPD*100;mean_LPD;avol_LPD*100;skew_LPD;kurt_LPD;minLPD*100;maxLPD*100];
+Summary_stat_LD= array2table(Summary_stat_LD,'VariableNames',LPnames,'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
+
 %% Weekly returns of the portfolio
 % 4b. Re-do the same exercise at weekly frequency. Elaborate on the relative effect of
 % temporal and contemporaneous aggregate normality features.
@@ -446,7 +482,7 @@ Portfolio_stat_W =[amean_PRW*100;mean_PRW;avol_PRW*100;skew_PRW;kurt_PRW;minPRW*
 Portfolio_stat_W= array2table(Portfolio_stat_W,'VariableNames',{'Porfolio'},'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
 
 % Creating a vector with the returns of the portfolio and each asset class
-Portfolio_LRW=[PRW SimWeekR];
+Portfolio_SRW=[PRW SimWeekR];
 
 % Computing vector of descriptive statistics for the portfolio and
 % individuals assets
@@ -463,12 +499,69 @@ max_PW=[maxPRW MaxSRW];
 Summary_stat_W=[amean_PW*100;mean_PW;avol_PW*100;skew_PW;kurt_PW;min_PW*100;max_PW*100];
 Summary_stat_W= array2table(Summary_stat_W,'VariableNames',['Porfolio',Names],'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
 
+
+%% Weekly Log returns of the portfolio
+% 4b. Re-do the same exercise at weekly frequency. Elaborate on the relative effect of
+% temporal and contemporaneous aggregate normality features.
+
+%Computing descriptive statistics
+PLW=LogWeekR*W';
+mean_PLW = mean(PLW);
+amean_PLW = (1+mean_PLW).^52-1; % annualized mean
+var_PLW = var(PLW);
+avol_PLW = sqrt(var_PLW*52); % annualized volatility
+skew_PLW = skewness(PLW);
+kurt_PLW = kurtosis(PLW);
+minPLW = min(PLW);
+maxPLW = max(PLW);
+
+%DataSet of the portfolio return
+Portfolio_stat_LW =[amean_PLW*100;mean_PLW;avol_PLW*100;skew_PLW;kurt_PLW;minPLW*100;maxPLW*100];
+Portfolio_stat_LW= array2table(Portfolio_stat_LW,'VariableNames',{'Porfolio'},'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
+
+% Creating a vector with the returns of the portfolio and each asset class
+Portfolio_LRW=[PLW LogWeekR];
+
+% Computing vector of descriptive statistics for the portfolio and
+% individuals assets
+amean_LPW=[amean_PLW MeanLRW];
+mean_LPW=[mean_PLW mean(LogWeekR)];
+avol_LPW=[avol_PLW VolLRW];
+skew_LPW=[skew_PLW SkewLRW];
+kurt_LPW=[kurt_PLW KurtLRW];
+min_LPW=[minPLW MinLRW];
+max_LPW=[maxPRW MaxLRW];
+
+% Creating a dataset with the descriptive statistics of the portfolio and
+% each asset class 
+Summary_stat_LW=[amean_LPW*100;mean_LPW;avol_LPW*100;skew_LPW;kurt_LPW;min_LPW*100;max_LPW*100];
+Summary_stat_LW= array2table(Summary_stat_LW,'VariableNames',['Porfolio',Names],'RowNames',{'AnnualizedMean','Mean','AnnualizedVol','Skewness','Kurtosis','Minimum','Maximum'});
+
 %% Calling plots and latex code
 
 disp('Analysis code finished, Starting conversion of table !')
+
+% Creating latex code from table
 tabletolatex
-disp('Conversion of table done, starting to plot graphs, ')
-disp('This may take up to two minutes !')
-Plot_Code
-App_AutoCorrelations
-disp('Code finished !')
+disp('Conversion of table done ! ')
+
+% Asking the user if he want to plot the graph because it quiet long !
+prompt = 'Do you want to plot the graphs ?\n This make take up to two minutes ! y/n [y]: ';
+str = input(prompt,'s');
+
+% Setting that if the user does respond, it's taken as yes
+if isempty(str)
+    str = 'y';
+end
+
+% Conditions that plots graph or not
+if str == 'y'
+    disp('Starting to plot graphs ! ')
+    Plot_Code
+    App_AutoCorrelations
+    disp('Code finished !')
+else
+    disp('Code finished !')
+end
+
+
